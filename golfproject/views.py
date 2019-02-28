@@ -175,3 +175,4 @@ class UpdateMember(UpdateView):
     template_name = 'golfproject/update_form.html'
     slug_field = 'username'
     slug_url_kwarg = 'slug'
+

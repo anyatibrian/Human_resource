@@ -2,7 +2,12 @@
 {% load static %}
 {% block pagecontent %}
     
-
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+{% bootstrap_css %}         {# Embed Bootstrap CSS #}
+{% bootstrap_javascript jquery='full' %}
+ {# Embed Bootstrap JS+jQuery #}
+{{ form.media }}
   <div class="content-wrapper">
     <div class="row">
       <div class="col-lg-12 grid-margin">
@@ -19,9 +24,10 @@
                         <p>Choose your file from here</p>
                       <form method="post" enctype="multipart/form-data" action="{% url 'upload-employees-file' %}">
                         {% csrf_token %}
-                        <div class="form-control">
+                        {% bootstrap_form form %}
+                        <!-- <div class="form-control">
                             <label>File Name</label>&nbsp; &nbsp; &nbsp;<input type="file"  name="myfile">
-                        </div>
+                        </div> -->
                         
                         <button type="submit" class="btn btn-success">Upload</button>
                       </form>

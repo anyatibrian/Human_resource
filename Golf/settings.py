@@ -77,28 +77,28 @@ WSGI_APPLICATION = 'Golf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'golfcourse',
-#         'USER': 'postgres',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',
-#         'PORT': '5432'
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
-        # 'NAME': 'ugfind',
-        # 'ENGINE': 'django.db.backends.mysql',        
-        # 'USER' : 'root',
-        # 'PASSWORD': 'aula72'
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'golfcourse',
+        'USER': 'postgres',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
+#         # 'NAME': 'ugfind',
+#         # 'ENGINE': 'django.db.backends.mysql',        
+#         # 'USER' : 'root',
+#         # 'PASSWORD': 'aula72'
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -174,3 +174,8 @@ if DEBUG:
 
 #export import 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+FILE_UPLOAD_HANDLERS = (
+    "django_excel.ExcelMemoryFileUploadHandler",
+    "django_excel.TemporaryExcelFileUploadHandler"
+    )

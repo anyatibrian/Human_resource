@@ -10,13 +10,14 @@ from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
-from golfproject.forms import DateInput
+from golfproject.forms import DateInput, UploadFileForm
 
 #import and export data
 from django.http import HttpResponse
 # from tablib import Dataset
 import tablib
 import os
+from .forms import UploadFileForm
 from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
 # Create your views here.
 
@@ -324,3 +325,22 @@ def upload_employees(request):
             # If there were no errors do the import for real
             result = person_resource.import_data(dataset, dry_run=False)
     return render(request, 'employee/import.html')
+
+def upload(request):
+    if request.method == "POST":
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            filehandle = request.FILES['myfile']
+            return excel.make_response(filehandle.get_sheet(), "csv",file_name="download")
+        else:
+            form = UploadFileForm()
+    return render(
+            request,
+            'employee/import.html',
+            {
+                'form': form,
+                'title': 'Excel file upload and download example',
+                'header': ('Please choose any excel file ' +'from your cloned repository:')
+            }
+        )
+                
