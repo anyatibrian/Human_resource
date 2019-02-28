@@ -1,0 +1,37 @@
+{% extends 'golfproject/base.html' %}
+{% load static %}
+{% block pagecontent %}
+    
+
+  <div class="content-wrapper">
+    <div class="row">
+      <div class="col-lg-12 grid-margin">
+          <div class="card">
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-6">
+                        <p>
+                            This importer will import the following fields: id, surname, first_name, middle_name, date_of_birth, gender, marital_status, Contact, email, number_of_children, image, create_at
+                        </p>
+                        <p>Example of the File is:</p>
+                        <img src="{% static 'golfproject/images/example/example.PNG' %}" alt="">
+                        <br><br><br>
+                        <p>Choose your file from here</p>
+                      <form method="post" enctype="multipart/form-data" action="{% url 'upload-employees-file' %}">
+                        {% csrf_token %}
+                        <div class="form-control">
+                            <label>File Name</label>&nbsp; &nbsp; &nbsp;<input type="file"  name="myfile">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">Upload</button>
+                      </form>
+                      </div>
+                      <div class="col-lg-3">
+                      </div>
+                  </div>
+              </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

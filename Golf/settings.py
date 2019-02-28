@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -76,14 +77,26 @@ WSGI_APPLICATION = 'Golf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'golfcourse',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'golfcourse',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
+        # 'NAME': 'ugfind',
+        # 'ENGINE': 'django.db.backends.mysql',        
+        # 'USER' : 'root',
+        # 'PASSWORD': 'aula72'
     }
 }
 
@@ -157,3 +170,7 @@ BOOTSTRAP4 = {
 if DEBUG:
     STRIPE_SECRET_KEY = 'sk_test_J4GxMxfIayH52ubh3DT2RQTK'
     STRIPE_PUBLISHABLE_KEY = 'pk_test_yWpgqkKdZ3dGTlNDqmIss0sF'
+
+
+#export import 
+IMPORT_EXPORT_USE_TRANSACTIONS = True

@@ -17,7 +17,8 @@ from employee.views import (EditPersonalDetailView,
                             CitizenshipCreateView,
                             CitizenshipEditView,
                             ResidentialInfoCreateView,
-                            ResidentialInfoEditView
+                            ResidentialInfoEditView,
+                            export_employee
                             )
 
 urlpatterns = [
@@ -51,7 +52,13 @@ urlpatterns = [
     path('residential/<int:pk>/', ResidentialInfoEditView.as_view(), name='residential-edit'),
     path('admin/bookings/', project_views.admin_booking_view, name='admin-books-info'),
     path('user/tournaments/booking', project_views.tournament_detail_view, name='user-booking-details'),
-    path('employee/profile/<int:pk>/', employee_views.employee_profile_view, name='employee-profile')
+    path('employee/profile/<int:pk>/', employee_views.employee_profile_view, name='employee-profile'),
+
+    #import export
+    path('employees/export/', employee_views.export_employee, name="export-employees"),
+    # path('employees/upload/', ),
+    path('employees/upload-file/', employee_views.import_employees, name="upload-employees-file"),
+    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

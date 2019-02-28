@@ -9,10 +9,11 @@ from django.contrib.auth.decorators import permission_required, login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.contrib.auth.models import User
-from golfproject.models import Tournament, BookingModel
+from golfproject.models import Tournament, BookingModel, UserProfile
 import stripe
 from Golf import settings
-
+#update member
+from django.views.generic.edit import UpdateView
 stripe.api_key = settings.STRIPE_PUBLISHABLE_KEY
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_yWpgqkKdZ3dGTlNDqmIss0sF'
@@ -36,7 +37,7 @@ def create_member_view(request):
         reg_form = RegisterMember(request.POST)
         if reg_form.is_valid():
             reg_form.save()
-            messages.success(request, f'members account has been successfully created')
+            messages.success(request, 'members account has been successfully created')
             return redirect('admin-members')
     else:
         reg_form = RegisterMember()
@@ -54,7 +55,7 @@ def members_page(request):
         register_form = RegisterMember(request.POST)
         if register_form.is_valid():
             register_form.save()
-            messages.success(request, f'member {username}has been created successfully')
+            messages.success(request, 'member'+username+'has been created successfully')
             return redirect('admin-members')
     else:
         register_form = RegisterMember()
@@ -76,7 +77,7 @@ def user_profile_page(request):
             profile_form_two.save()
             profile_form_one.save()
             redirect('admin-profile')
-            messages.success(request, f'your profile have been successfully updated')
+            messages.success(request, 'your profile have been successfully updated')
     else:
         profile_form_two = UserProfileForm(instance=request.user.userprofile)
         profile_form_one = EditProfile(instance=request.user)
@@ -164,3 +165,13 @@ def tournament_detail_view(request):
         'booking': booking_info
     }
     return render(request, 'golfproject/tournament_booking.html', context)
+
+
+#edit member view
+
+class UpdateMember(UpdateView):
+    model = UserProfile
+    fields = ['gender', 'address', 'phone_number', 'member_category', 'image']
+    template_name = 'golfproject/update_form.html'
+    slug_field = 'username'
+    slug_url_kwarg = 'slug'

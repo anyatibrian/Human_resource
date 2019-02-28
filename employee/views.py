@@ -12,7 +12,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from golfproject.forms import DateInput
 
-
+#import and export data
+from django.http import HttpResponse
+# from tablib import Dataset
+import tablib
+import os
+from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
 # Create your views here.
 
 @login_required()
@@ -270,3 +275,52 @@ def employee_profile_view(request, pk):
         'employee_info':employee_info
     }
     return render(request, 'employee/employee_profile.html', context)
+
+
+
+#upload employees
+def export_employee(request):
+    person_resource = EmployeePersonalInfoResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="employee-data.xlsx"'
+    return response
+
+def import_employees(request):
+    if request.method == 'POST':
+        person_resource = EmployeePersonalInfoResource()
+        dataset = tablib.Dataset()
+        new_persons = request.FILES['myfile']
+        x = new_persons.read()
+
+        imported_data = dataset.load(new_persons.read().decode('utf-8'), format='csv')
+        # import_data = dataset.load(x.decode('utf-8'))
+        print(str(imported_data))
+        result = person_resource.import_data(dataset, dry_run=True)  # Test the data import
+
+        if not result.has_errors():
+            person_resource.import_data(dataset, dry_run=False)  # Actually import now
+
+    return render(request, 'employee/import.html')
+
+def upload_employees(request):
+    if request.method == 'POST':
+        person_resource = EmployeePersonalInfoResource()
+        dataset = tablib.Dataset()   # We need a dataset object
+        new_persons = request.FILES['myfile']
+        # Essai_Temperature_Resource = resources.modelresource_factory(model=Essai_Temperature)()
+
+        # file = 'c:\import\data.xls'
+        dataset.xls = open(new_persons.read())
+
+        # Add a blank ID column to each row.
+        dataset.insert_col(0, col=[None,], header="id")
+
+        # Do a Dry-Run and see if anything fails
+        result = person_resource.import_data(dataset, dry_run=True)
+        if (result.has_errors()):
+            print(result)  # What is the error?
+        else:
+            # If there were no errors do the import for real
+            result = person_resource.import_data(dataset, dry_run=False)
+    return render(request, 'employee/import.html')

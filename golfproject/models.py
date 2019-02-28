@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import pre_save
-
+from django.urls import reverse
 from Golf import settings
 import stripe
 
@@ -19,7 +19,9 @@ class UserProfile(models.Model):
     image = models.ImageField(default='avatar.jpg', upload_to='profile_pics')
 
     def __str__(self):
-        return f'{self.user.username}profile'
+        return self.user.username
+    def get_absolute_url(self):
+        return reverse('admin-members')
 
 
 class Tournament(models.Model):
@@ -54,6 +56,6 @@ class BookingModel(models.Model):
     women_handicap = models.CharField(max_length=20, null=True, default="None")
 
     def __str__(self):
-        return f'{self.tournament} booking'
+        return self.tournament
 
 
