@@ -20,6 +20,7 @@
                             <th>Phone number</th>
                             <th>Join Date</th>
                             <th>Category</th>
+                            <th>edit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -32,7 +33,8 @@
                             <td>{{ member.userprofile.phone_number }}</td>
                             <td>{{ member.date_joined }}</td>
                             <td>{{ member.userprofile.member_category }}</td>
-                        </tr>
+                            <td><a href="{% url 'citizenship-edit' member.pk %}"><i class="mdi mdi-tooltip-edit text text-warning text-lg-center"
+                                      style="font-size:20px;"></i></a></td></tr>
                         {% endfor %}
                         </tfoot>
                     </table>

@@ -44,7 +44,10 @@ def create_member_view(request):
         'reg_form':reg_form
     }
     return render(request, 'golfproject/members_create.html', context)
-
+    
+# function responsible for editing the members details
+def edit_members_view(request):
+    return render(request, 'golfcourse/member_edit.html')
 
 # loading the members page
 @login_required()
@@ -54,7 +57,7 @@ def members_page(request):
         register_form = RegisterMember(request.POST)
         if register_form.is_valid():
             register_form.save()
-            messages.success(request, f'member {username}has been created successfully')
+            messages.success(request, f'members account has been created successfully')
             return redirect('admin-members')
     else:
         register_form = RegisterMember()
@@ -164,3 +167,4 @@ def tournament_detail_view(request):
         'booking': booking_info
     }
     return render(request, 'golfproject/tournament_booking.html', context)
+
