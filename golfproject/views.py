@@ -44,10 +44,20 @@ def create_member_view(request):
         'reg_form':reg_form
     }
     return render(request, 'golfproject/members_create.html', context)
-    
+
 # function responsible for editing the members details
-def edit_members_view(request):
-    return render(request, 'golfcourse/member_edit.html')
+def edit_members_view(request,id=None):
+    instance = User.objects.get(id= id)
+    update_form = RegisterMember(request.POST or None, instance=instance)
+    if update_form.is_valid():
+        update_form.save()
+        return redirect('admin-members')
+    context = {
+        'edit_form':update_form,
+        'form_title':instance.username,
+        'instance':instance
+        }
+    return render(request, 'golfproject/members_edit.html', context)
 
 # loading the members page
 @login_required()
@@ -65,8 +75,7 @@ def members_page(request):
         'members': User.objects.all(),
         'reg_form': register_form
     }
-
-    return render(request, 'golfproject/members.html', context)
+    return render(request, 'golfproject/members.html', context) 
 
 
 # loading the user profile page

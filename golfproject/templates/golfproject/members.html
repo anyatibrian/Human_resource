@@ -33,7 +33,7 @@
                             <td>{{ member.userprofile.phone_number }}</td>
                             <td>{{ member.date_joined }}</td>
                             <td>{{ member.userprofile.member_category }}</td>
-                            <td><a href="{% url 'citizenship-edit' member.pk %}"><i class="mdi mdi-tooltip-edit text text-warning text-lg-center"
+                            <td><a href="{% url 'admin-member-edit' member.pk %}"><i class="mdi mdi-tooltip-edit text text-warning text-lg-center"
                                       style="font-size:20px;"></i></a></td></tr>
                         {% endfor %}
                         </tfoot>

@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/dashboard/', project_views.admin_index_page, name='admin-index'),
     path('login/', LoginView.as_view(template_name='golfproject/pages/samples/login.html'), name='admin-login'),
     path('member/', project_views.members_page, name='admin-members'),
+    path('member/edit/<int:id>/',project_views.edit_members_view, name='admin-member-edit'),
     path('members/create', project_views.create_member_view, name='create-member'),
     path('logout/', LogoutView.as_view(), name='admin-logout'),
     path('user/profile/', project_views.user_profile_page, name='admin-profile'),
