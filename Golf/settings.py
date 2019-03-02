@@ -157,3 +157,6 @@ BOOTSTRAP4 = {
 if DEBUG:
     STRIPE_SECRET_KEY = 'sk_test_J4GxMxfIayH52ubh3DT2RQTK'
     STRIPE_PUBLISHABLE_KEY = 'pk_test_yWpgqkKdZ3dGTlNDqmIss0sF'
+# SMTP mail setting 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
