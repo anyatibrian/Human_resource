@@ -3,7 +3,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from golfproject import views as project_views
 from golfproject.views import (TournamentListView)
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import( LoginView,
+                                       LogoutView,
+                                       PasswordResetView,
+                                       PasswordResetDoneView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetCompleteView)
 from employee import views as employee_views
 from employee.views import (EditPersonalDetailView,
                             EmployeeInfoCreateView,
@@ -27,6 +32,10 @@ urlpatterns = [
     path('member/edit/<int:id>/',project_views.edit_members_view, name='admin-member-edit'),
     path('members/create', project_views.create_member_view, name='create-member'),
     path('logout/', LogoutView.as_view(), name='admin-logout'),
+    path('password-reset/', PasswordResetView.as_view(), name='password-reset-view'),
+    path('password-reset/done', PasswordResetDoneView.as_view(), name='password-reset-done-view'),
+    path('reset/<uidb64>/<token>/',PasswordResetConfirmView.as_view(), name='password-reset-confirm-view'),
+    path('reset/done /', PasswordResetCompleteView.as_view(), name='password-reset-complete-view'),
     path('user/profile/', project_views.user_profile_page, name='admin-profile'),
     path('add/tournaments/', project_views.add_tournament, name='admin-tournament'),
     path('all/tournaments/', TournamentListView.as_view(), name='user-tournaments'),
