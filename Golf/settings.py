@@ -160,3 +160,7 @@ if DEBUG:
 # SMTP mail setting 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
+
+# django excel import and export configurationg with django excel
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")

@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect,Http404
 from django.urls import reverse_lazy
+import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
                              NextOfKind,
                              EmploymentInformation,
@@ -11,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from golfproject.forms import DateInput
+from employee.forms import ImportForm
 
 
 # Create your views here.
@@ -20,12 +22,19 @@ from golfproject.forms import DateInput
 def view_employee_personal_info(request):
     # the view responsible for showing all the employee information details
     employee_info = EmployeePersonalInfo.objects.all()
+    if request.method =='POST':
+        import_form = ImportForm(request.POST, request.FILES)
+        if import_form.is_valid():
+            pass
+    else:
+          import_form = ImportForm()                           
     context = {
-        'employee_info': employee_info
+        'employee_info': employee_info,
+        'heading':'choose your file to uplaod',
+        'import_form':import_form
     }
     return render(request, 'employee/personal_info.html', context)
-
-
+# import data from the csv file
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',
