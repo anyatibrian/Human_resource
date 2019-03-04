@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect,Http404
+from django.shortcuts import render, redirect,Http404,HttpResponse
 from django.urls import reverse_lazy
 import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
@@ -12,7 +12,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
 from golfproject.forms import DateInput
+from tablib import Dataset
 from employee.forms import ImportForm
+from employee.resources import EmployeeInfoResource
 
 
 # Create your views here.
@@ -24,8 +26,13 @@ def view_employee_personal_info(request):
     employee_info = EmployeePersonalInfo.objects.all()
     if request.method =='POST':
         import_form = ImportForm(request.POST, request.FILES)
-        if import_form.is_valid():
-            pass
+        employee_info_resource = EmployeeInfoResource()
+        dataset = Dataset()
+        new_employee = request.FILES['file']
+        dataset.load(new_employee.read())
+        result = employee_info_resource.import_data(dataset, dry_run=True)
+        if not result.has_errors():
+            employee_info_resource.import_data(dataset, dry_run=False)
     else:
           import_form = ImportForm()                           
     context = {
@@ -34,7 +41,15 @@ def view_employee_personal_info(request):
         'import_form':import_form
     }
     return render(request, 'employee/personal_info.html', context)
-# import data from the csv file
+# export data from the csv file
+
+def export(request):
+    employee = EmployeeInfoResource()
+    dataset = employee.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+    return response
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',

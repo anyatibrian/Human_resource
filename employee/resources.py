@@ -8,6 +8,7 @@ from employee.models import (
     CitizenshipInfo
 )
 
-class EmployeeResourse(resources.ModelResource):
+class EmployeeInfoResource(resources.ModelResource):
     class Meta:
-        model = EmployeePersonalInfo()
+        model = EmployeePersonalInfo
+        exclude =('image','create_at')
