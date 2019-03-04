@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+<<<<<<< HEAD
     'import_export',
+=======
+    'import_export'
+>>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 ]
 
 MIDDLEWARE = [
@@ -179,3 +183,8 @@ IMPORT_EXPORT_USE_TRANSACTIONS = True
 #    "django_excel.ExcelMemoryFileUploadHandler",
 #    "django_excel.TemporaryExcelFileUploadHandler"
 # )
+# SMTP mail setting 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+
+# django excel import and export configurationg with django excel

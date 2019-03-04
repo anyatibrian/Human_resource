@@ -33,3 +33,16 @@ class BankInformationResource(resources.ModelResource):
 class AreaOfResidenceResource(resources.ModelResource):
     class Meta:
         model = AreaOfResidence
+from employee.models import (
+    EmployeePersonalInfo,
+    BankInformation,
+    NextOfKind,
+    AreaOfResidence,
+    EmploymentInformation,
+    CitizenshipInfo
+)
+
+class EmployeeInfoResource(resources.ModelResource):
+    class Meta:
+        model = EmployeePersonalInfo
+        exclude =('image','create_at')

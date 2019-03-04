@@ -27,6 +27,7 @@
                             <th>Join Date</th>
                             <th>Category</th>
                             <th></th>
+                            <th>edit</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,6 +45,8 @@
                                     style="font-size:20px;"></i></a></td>
                             </td>
                         </tr>
+                            <td><a href="{% url 'admin-member-edit' member.pk %}"><i class="mdi mdi-tooltip-edit text text-warning text-lg-center"
+                                      style="font-size:20px;"></i></a></td></tr>
                         {% endfor %}
                         </tfoot>
                     </table>

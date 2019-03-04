@@ -2,8 +2,14 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from golfproject import views as project_views
+from employee import views as employee_views
 from golfproject.views import (TournamentListView)
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import( LoginView,
+                                       LogoutView,
+                                       PasswordResetView,
+                                       PasswordResetDoneView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetCompleteView)
 from employee import views as employee_views
 from employee.views import (EditPersonalDetailView,
                             EmployeeInfoCreateView,
@@ -25,8 +31,13 @@ urlpatterns = [
     path('admin/dashboard/', project_views.admin_index_page, name='admin-index'),
     path('login/', LoginView.as_view(template_name='golfproject/pages/samples/login.html'), name='admin-login'),
     path('member/', project_views.members_page, name='admin-members'),
+    path('member/edit/<int:id>/',project_views.edit_members_view, name='admin-member-edit'),
     path('members/create', project_views.create_member_view, name='create-member'),
     path('logout/', LogoutView.as_view(), name='admin-logout'),
+    path('password-reset/', PasswordResetView.as_view(), name='password_reset'),
+    path('password-reset/done/', PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/',PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done /', PasswordResetCompleteView.as_view(), name='password-reset-complete-view'),
     path('user/profile/', project_views.user_profile_page, name='admin-profile'),
     path('add/tournaments/', project_views.add_tournament, name='admin-tournament'),
     path('all/tournaments/', TournamentListView.as_view(), name='user-tournaments'),
@@ -59,6 +70,7 @@ urlpatterns = [
     # path('employees/upload/', ),
     path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
     path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
+    path('employee/info/export', employee_views.export, name='employee_info_export')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 # encoding=utf8
 from django.shortcuts import render
+=======
+from django.shortcuts import render, redirect,Http404,HttpResponse
+>>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 from django.urls import reverse_lazy
+import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
                              NextOfKind,
                              EmploymentInformation,
@@ -22,6 +27,12 @@ from django.contrib import messages
 import os, csv, io, xlrd
 from datetime import datetime
 from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
+from golfproject.forms import DateInput
+from tablib import Dataset
+from employee.forms import ImportForm
+from employee.resources import EmployeeInfoResource
+
+
 # Create your views here.
 
 @login_required()
@@ -29,12 +40,32 @@ from .resources import EmployeePersonalInfoResource, EmploymentInformationResour
 def view_employee_personal_info(request):
     # the view responsible for showing all the employee information details
     employee_info = EmployeePersonalInfo.objects.all()
+    if request.method =='POST':
+        import_form = ImportForm(request.POST, request.FILES)
+        employee_info_resource = EmployeeInfoResource()
+        dataset = Dataset()
+        new_employee = request.FILES['file']
+        dataset.load(new_employee.read())
+        result = employee_info_resource.import_data(dataset, dry_run=True)
+        if not result.has_errors():
+            employee_info_resource.import_data(dataset, dry_run=False)
+    else:
+          import_form = ImportForm()                           
     context = {
-        'employee_info': employee_info
+        'employee_info': employee_info,
+        'heading':'choose your file to uplaod',
+        'import_form':import_form
     }
     return render(request, 'employee/personal_info.html', context)
+# export data from the csv file
 
-
+def export(request):
+    employee = EmployeeInfoResource()
+    dataset = employee.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+    return response
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',
