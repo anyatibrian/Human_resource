@@ -57,7 +57,7 @@ urlpatterns = [
     #import export
     path('employees/export/', employee_views.export_employee, name="export-employees"),
     # path('employees/upload/', ),
-    path('employees/upload-file/', employee_views.import_employees, name="upload-employees-file"),
+    path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
     path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
 ]
 if settings.DEBUG:

@@ -175,7 +175,7 @@ if DEBUG:
 #export import 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
-FILE_UPLOAD_HANDLERS = (
-    "django_excel.ExcelMemoryFileUploadHandler",
-    "django_excel.TemporaryExcelFileUploadHandler"
-    )
+# FILE_UPLOAD_HANDLERS = (
+#    "django_excel.ExcelMemoryFileUploadHandler",
+#    "django_excel.TemporaryExcelFileUploadHandler"
+# )

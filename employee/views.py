@@ -1,3 +1,4 @@
+# encoding=utf8
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from employee.models import (EmployeePersonalInfo,
@@ -14,10 +15,12 @@ from golfproject.forms import DateInput, UploadFileForm
 
 #import and export data
 from django.http import HttpResponse
-# from tablib import Dataset
-import tablib
-import os
-from .forms import UploadFileForm
+from tablib import Dataset
+from django.contrib import messages
+# import os
+# from .forms import UploadFileForm
+import os, csv, io, xlrd
+from datetime import datetime
 from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
 # Create your views here.
 
@@ -277,9 +280,9 @@ def employee_profile_view(request, pk):
     }
     return render(request, 'employee/employee_profile.html', context)
 
-
-
-#upload employees
+#upload employees and except
+@login_required()
+@permission_required('is_superuser')
 def export_employee(request):
     person_resource = EmployeePersonalInfoResource()
     dataset = person_resource.export()
@@ -287,60 +290,39 @@ def export_employee(request):
     response['Content-Disposition'] = 'attachment; filename="employee-data.xlsx"'
     return response
 
-def import_employees(request):
-    if request.method == 'POST':
-        person_resource = EmployeePersonalInfoResource()
-        dataset = tablib.Dataset()
-        new_persons = request.FILES['myfile']
-        x = new_persons.read()
-
-        imported_data = dataset.load(new_persons.read().decode('utf-8'), format='csv')
-        # import_data = dataset.load(x.decode('utf-8'))
-        print(str(imported_data))
-        result = person_resource.import_data(dataset, dry_run=True)  # Test the data import
-
-        if not result.has_errors():
-            person_resource.import_data(dataset, dry_run=False)  # Actually import now
-
-    return render(request, 'employee/import.html')
-
-def upload_employees(request):
-    if request.method == 'POST':
-        person_resource = EmployeePersonalInfoResource()
-        dataset = tablib.Dataset()   # We need a dataset object
-        new_persons = request.FILES['myfile']
-        # Essai_Temperature_Resource = resources.modelresource_factory(model=Essai_Temperature)()
-
-        # file = 'c:\import\data.xls'
-        dataset.xls = open(new_persons.read())
-
-        # Add a blank ID column to each row.
-        dataset.insert_col(0, col=[None,], header="id")
-
-        # Do a Dry-Run and see if anything fails
-        result = person_resource.import_data(dataset, dry_run=True)
-        if (result.has_errors()):
-            print(result)  # What is the error?
-        else:
-            # If there were no errors do the import for real
-            result = person_resource.import_data(dataset, dry_run=False)
-    return render(request, 'employee/import.html')
-
-def upload(request):
-    if request.method == "POST":
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            filehandle = request.FILES['myfile']
-            return excel.make_response(filehandle.get_sheet(), "csv",file_name="download")
-        else:
-            form = UploadFileForm()
-    return render(
-            request,
-            'employee/import.html',
-            {
-                'form': form,
-                'title': 'Excel file upload and download example',
-                'header': ('Please choose any excel file ' +'from your cloned repository:')
-            }
+@login_required()
+@permission_required('is_superuser')
+def upload_new_employees(request):
+    template = "employee/import.html"
+    prompt = {
+        'order':'This importer will import the following fields: id, surname, first_name, \
+        middle_name, date_of_birth, gender, marital_status, contact, email, number_of_children, image, create_at'
+    }
+    if request.method == 'GET':
+        return render(request, template, prompt)
+    csv_file = request.FILES['myfile']
+    if not csv_file.name.endswith('.csv'):
+        messages.error(request, 'This not a valid file')
+    data_set = csv_file.read().decode('UTF-8')
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=','):
+        print(column[3])
+        _, created = EmployeePersonalInfo.objects.update_or_create(
+            surname = column[0],
+            first_name = column[1],
+            middle_name = column[2],
+            date_of_birth = str(datetime.strptime(column[3], "%d/%m/%Y").strftime("%Y-%m-%d")),#column[3],
+            gender = column[4],
+            marital_status = column[5],
+            Contact = column[6],
+            email = column[7],
+            number_of_children = column[8],
+            image = column[9]
+            # create_at = mode
         )
-                
+        
+    context = {}
+    return render(request, template, context)
+    
+
