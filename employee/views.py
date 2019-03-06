@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+# encoding=utf8
+from django.shortcuts import render
+=======
 from django.shortcuts import render, redirect,Http404,HttpResponse
+>>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 from django.urls import reverse_lazy
 import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
@@ -11,6 +16,17 @@ from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User
+from golfproject.forms import DateInput, UploadFileForm
+
+#import and export data
+from django.http import HttpResponse
+from tablib import Dataset
+from django.contrib import messages
+# import os
+# from .forms import UploadFileForm
+import os, csv, io, xlrd
+from datetime import datetime
+from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
 from golfproject.forms import DateInput
 from tablib import Dataset
 from employee.forms import ImportForm
@@ -345,3 +361,50 @@ def employee_profile_view(request, pk):
         'employee_info':employee_info
     }
     return render(request, 'employee/employee_profile.html', context)
+
+#upload employees and except
+@login_required()
+@permission_required('is_superuser')
+def export_employee(request):
+    person_resource = EmployeePersonalInfoResource()
+    dataset = person_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="employee-data.xlsx"'
+    return response
+
+@login_required()
+@permission_required('is_superuser')
+def upload_new_employees(request):
+    template = "employee/import.html"
+    prompt = {
+        'order':'This importer will import the following fields: id, surname, first_name, \
+        middle_name, date_of_birth, gender, marital_status, contact, email, number_of_children, image, create_at'
+    }
+    if request.method == 'GET':
+        return render(request, template, prompt)
+    csv_file = request.FILES['myfile']
+    if not csv_file.name.endswith('.csv'):
+        messages.error(request, 'This not a valid file')
+    data_set = csv_file.read().decode('UTF-8')
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=','):
+        print(column[3])
+        _, created = EmployeePersonalInfo.objects.update_or_create(
+            surname = column[0],
+            first_name = column[1],
+            middle_name = column[2],
+            date_of_birth = str(datetime.strptime(column[3], "%d/%m/%Y").strftime("%Y-%m-%d")),#column[3],
+            gender = column[4],
+            marital_status = column[5],
+            Contact = column[6],
+            email = column[7],
+            number_of_children = column[8],
+            image = column[9]
+            # create_at = mode
+        )
+        
+    context = {}
+    return render(request, template, context)
+    
+

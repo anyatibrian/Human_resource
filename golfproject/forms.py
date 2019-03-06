@@ -155,3 +155,9 @@ class BookingForms(forms.ModelForm):
             'tournament': forms.HiddenInput(attrs={'hidden': True}),
             'play_levels': forms.Select(attrs={'required': False})
         }
+
+
+class UploadFileForm(forms.Form):
+    file = forms.FileField()
+    class Meta:
+        fields = ['file']

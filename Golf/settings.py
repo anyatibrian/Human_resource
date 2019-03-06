@@ -40,7 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+<<<<<<< HEAD
+    'import_export',
+=======
     'import_export'
+>>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 ]
 
 MIDDLEWARE = [
@@ -87,6 +91,18 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
+#         # 'NAME': 'ugfind',
+#         # 'ENGINE': 'django.db.backends.mysql',        
+#         # 'USER' : 'root',
+#         # 'PASSWORD': 'aula72'
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -158,10 +174,17 @@ BOOTSTRAP4 = {
 if DEBUG:
     STRIPE_SECRET_KEY = 'sk_test_J4GxMxfIayH52ubh3DT2RQTK'
     STRIPE_PUBLISHABLE_KEY = 'pk_test_yWpgqkKdZ3dGTlNDqmIss0sF'
+
+
+#export import 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# FILE_UPLOAD_HANDLERS = (
+#    "django_excel.ExcelMemoryFileUploadHandler",
+#    "django_excel.TemporaryExcelFileUploadHandler"
+# )
 # SMTP mail setting 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 
 # django excel import and export configurationg with django excel
-FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
-                        "django_excel.TemporaryExcelFileUploadHandler")

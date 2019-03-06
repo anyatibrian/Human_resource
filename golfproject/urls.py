@@ -23,7 +23,8 @@ from employee.views import (EditPersonalDetailView,
                             CitizenshipCreateView,
                             CitizenshipEditView,
                             ResidentialInfoCreateView,
-                            ResidentialInfoEditView
+                            ResidentialInfoEditView,
+                            export_employee
                             )
 
 urlpatterns = [
@@ -63,6 +64,7 @@ urlpatterns = [
     path('admin/bookings/', project_views.admin_booking_view, name='admin-books-info'),
     path('user/tournaments/booking', project_views.tournament_detail_view, name='user-booking-details'),
     path('employee/profile/<int:pk>/', employee_views.employee_profile_view, name='employee-profile'),
+<<<<<<< HEAD
     path('employee/info/export/',employee_views.export_employee_info, name='employee_info_export'),
     path('employment/info/export/', employee_views.export_employeement_info, name='employement_info_export'),
     path('nextofkind/info/export/', employee_views.export_next_of_kind_info, name='employement_nextofkind_export'),
@@ -71,6 +73,15 @@ urlpatterns = [
     path('areaofresident/info/export/', employee_views.export_areof_residence_info,
          name='areaof_residence_info_export'),
    
+=======
+
+    #import export
+    path('employees/export/', employee_views.export_employee, name="export-employees"),
+    # path('employees/upload/', ),
+    path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
+    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
+    path('employee/info/export', employee_views.export, name='employee_info_export')
+>>>>>>> 426212663cf22e71961d4709d98e627cdc043a04
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
