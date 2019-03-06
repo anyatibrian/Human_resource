@@ -40,11 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
-<<<<<<< HEAD
     'import_export',
-=======
-    'import_export'
->>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
+
 ]
 
 MIDDLEWARE = [

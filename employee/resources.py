@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 from import_export import resources, fields, widgets
-from import_export.widgets import ForeignK
+from import_export.widgets import ForeignKeyWidget
 from import_export import resources
-
 from employee.models import (
     EmployeePersonalInfo,
     BankInformation,

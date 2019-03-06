@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-# encoding=utf8
-from django.shortcuts import render
-=======
 from django.shortcuts import render, redirect,Http404,HttpResponse
->>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 from django.urls import reverse_lazy
 import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
