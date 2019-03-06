@@ -63,7 +63,14 @@ urlpatterns = [
     path('admin/bookings/', project_views.admin_booking_view, name='admin-books-info'),
     path('user/tournaments/booking', project_views.tournament_detail_view, name='user-booking-details'),
     path('employee/profile/<int:pk>/', employee_views.employee_profile_view, name='employee-profile'),
-    path('employee/info/export', employee_views.export, name='employee_info_export')
+    path('employee/info/export/',employee_views.export_employee_info, name='employee_info_export'),
+    path('employment/info/export/', employee_views.export_employeement_info, name='employement_info_export'),
+    path('nextofkind/info/export/', employee_views.export_next_of_kind_info, name='employement_nextofkind_export'),
+    path('bank/info/export/', employee_views.export_bank_info, name='bank_info_export'),
+    path('citizenship/info/export/', employee_views.export_citienship_info, name='citizenship_info_export'),
+    path('areaofresident/info/export/', employee_views.export_areof_residence_info,
+         name='areaof_residence_info_export'),
+   
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

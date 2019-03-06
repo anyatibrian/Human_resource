@@ -14,7 +14,13 @@ from django.contrib.auth.models import User
 from golfproject.forms import DateInput
 from tablib import Dataset
 from employee.forms import ImportForm
-from employee.resources import EmployeeInfoResource
+from employee.resources import (
+                                EmployeeInfoResource, 
+                                EmploymentInformationResourse,
+                                NextOfKindResources,BankInfoResources,
+                                CitizenshipResources,
+                                AreaOfResidenceResources
+                               )
 
 
 # Create your views here.
@@ -43,13 +49,58 @@ def view_employee_personal_info(request):
     return render(request, 'employee/personal_info.html', context)
 # export data from the csv file
 
-def export(request):
+def export_employee_info(request):
     employee = EmployeeInfoResource()
     dataset = employee.export()
     response = HttpResponse(
         dataset.xls, content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
     return response
+
+def export_employeement_info(request):
+    employment_info = EmploymentInformationResourse()
+    dataset = employment_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="employent_info.xls"'
+    return response
+
+
+def export_next_of_kind_info(request):
+    next_of_kind_info = NextOfKindResources()
+    dataset = next_of_kind_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="nextofkind_info.xls"'
+    return response
+
+
+def export_bank_info(request):
+    bank_info = NextOfKindResources()
+    dataset = bank_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="bank_info.xls"'
+    return response
+
+
+def export_citienship_info(request):
+    citizenship = CitizenshipResources()
+    dataset = citizenship.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="citizenship_info.xls"'
+    return response
+
+
+def export_areof_residence_info(request):
+    area_of_residence = AreaOfResidenceResources()
+    dataset = area_of_residence.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="areofresidence_info.xls"'
+    return response
+
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',

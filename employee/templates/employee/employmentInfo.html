@@ -10,6 +10,8 @@
                   <a  href="{% url 'employment-info-add' %}" class="btn btn-icons btn-rounded btn-warning float-right mb-2">
                       <i class="mdi mdi-plus"></i>
                   </a>
+                  <a href="{% url 'employement_info_export' %}" class="btn btn-iconsbtn-success float-right mb-2 mr-3 btn-facebook" style="color:white;background:#00ce68;">
+                  <i class="mdi mdi-file-export"></i>Export</a>
                   <div class="table-responsive">
                     <table id="example-table" class="table table-striped table-bordered" style="width:100%">
                         <thead>
@@ -28,8 +30,8 @@
                         {% for info in employment_info %}
                             <tr>
                             <td><img src="{{ info.employee.image.url }}" alt="profile_pic"></td>
-                            <td>{{ info.date_employed }}</td>
-                                <td>{{ info.current_job_title}}</td>
+                            <td>{{ info.current_job_title}}</td>
+                                <td>{{ info.date_employed}}</td>
                             <td>{{ info.department }}</td>
                             <td>{{ info.employee_Id_number}}</td>
                             <td>{{ info.NSSF_number}}</td>
