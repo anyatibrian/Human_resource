@@ -7,6 +7,14 @@ from employee.models import (EmployeePersonalInfo,
                              BankInformation,
                              CitizenshipInfo,
                              AreaOfResidence)
+from employee.resources import (
+    EmployeeInfoResource,
+    NextOfKindResources,
+    EmploymentInformationResourse,
+    AreaOfResidenceResources,
+    BankInfoResources,
+    CitizenshipResources
+)
 from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
@@ -21,18 +29,9 @@ from django.contrib import messages
 # from .forms import UploadFileForm
 import os, csv, io, xlrd
 from datetime import datetime
-from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
 from golfproject.forms import DateInput
 from tablib import Dataset
 from employee.forms import ImportForm
-from employee.resources import (
-                                EmployeeInfoResource, 
-                                EmploymentInformationResourse,
-                                NextOfKindResources,BankInfoResources,
-                                CitizenshipResources,
-                                AreaOfResidenceResources
-                               )
-
 
 # Create your views here.
 
@@ -40,18 +39,7 @@ from employee.resources import (
 @permission_required('is_superuser')
 def view_employee_personal_info(request):
     # the view responsible for showing all the employee information details
-    employee_info = EmployeePersonalInfo.objects.all()
-    if request.method =='POST':
-        import_form = ImportForm(request.POST, request.FILES)
-        employee_info_resource = EmployeeInfoResource()
-        dataset = Dataset()
-        new_employee = request.FILES['file']
-        dataset.load(new_employee.read())
-        result = employee_info_resource.import_data(dataset, dry_run=True)
-        if not result.has_errors():
-            employee_info_resource.import_data(dataset, dry_run=False)
-    else:
-          import_form = ImportForm()                           
+    employee_info = EmployeePersonalInfo.objects.all()                         
     context = {
         'employee_info': employee_info,
         'heading':'choose your file to uplaod',

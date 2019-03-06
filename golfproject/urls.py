@@ -74,8 +74,7 @@ urlpatterns = [
     path('employees/export/', employee_views.export_employee, name="export-employees"),
     # path('employees/upload/', ),
     path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
-    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit"),
-    path('employee/info/export', employee_views.export, name='employee_info_export'),
+    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
