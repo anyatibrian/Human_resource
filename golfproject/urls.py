@@ -10,7 +10,6 @@ from django.contrib.auth.views import( LoginView,
                                        PasswordResetDoneView,
                                        PasswordResetConfirmView,
                                        PasswordResetCompleteView)
-from employee import views as employee_views
 from employee.views import (EditPersonalDetailView,
                             EmployeeInfoCreateView,
                             NextOfKindCreateView,
@@ -23,8 +22,7 @@ from employee.views import (EditPersonalDetailView,
                             CitizenshipCreateView,
                             CitizenshipEditView,
                             ResidentialInfoCreateView,
-                            ResidentialInfoEditView,
-                            export_employee
+                            ResidentialInfoEditView
                             )
 
 urlpatterns = [
@@ -71,7 +69,6 @@ urlpatterns = [
     path('citizenship/info/export/', employee_views.export_citienship_info, name='citizenship_info_export'),
     path('areaofresident/info/export/', employee_views.export_areof_residence_info,
          name='areaof_residence_info_export'),
-    path('employees/export/', employee_views.export_employee, name="export-employees"),
     # path('employees/upload/', ),
     path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
     path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")

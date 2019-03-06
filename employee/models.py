@@ -41,6 +41,7 @@ class NextOfKind(models.Model):
     gender = models.CharField(max_length=100, choices=GENDER)
     relationship = models.CharField(max_length=100, choices=RELATIONSHIP)
     contact = models.CharField(max_length=100)
+    created_at = models.DateTimeField()
 
     def __str__(self):
         return '{} personal Information'.format(self.employee.first_name)
@@ -57,6 +58,7 @@ class AreaOfResidence(models.Model):
     town_council = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
     length_of_current_residence = models.CharField(max_length=30)
+    created_at = models.DateTimeField()
 
     def __str__(self):
         return '{}'.format(self.street_name)
@@ -74,6 +76,7 @@ class EmploymentInformation(models.Model):
     employee_Id_number = models.CharField(max_length=100)
     NSSF_number = models.CharField(max_length=30, null=True)
     Tin_number = models.CharField(max_length=30, null=True)
+    created_at = models.DateTimeField()
 
     def __str__(self):
         return '{} started working on {}'.format(self.employee.first_name, self.date_employed)
@@ -88,6 +91,7 @@ class BankInformation(models.Model):
     name_of_bank = models.CharField(max_length=100, null=True)
     bank_account_title = models.CharField(max_length=100, null=True)
     account_number = models.CharField(max_length=100, null=True)
+    create_at = models.DateTimeField()
 
     def __str__(self):
         return '{}'.format(self.name_of_bank)

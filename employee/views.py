@@ -116,7 +116,7 @@ def export_areof_residence_info(request):
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',
-              'gender', 'marital_status', 'email', 'Contact', 'number_of_children']
+              'gender', 'marital_status', 'email', 'contact', 'number_of_children']
 
     def get_form(self, form_class=CreateView):
         form = super().get_form()
