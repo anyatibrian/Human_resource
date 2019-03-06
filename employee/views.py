@@ -42,12 +42,14 @@ def view_employee_personal_info(request):
     employee_info = EmployeePersonalInfo.objects.all()                         
     context = {
         'employee_info': employee_info,
-        'heading':'choose your file to uplaod',
-        'import_form':import_form
+        'heading':'choose your file to uplaod'
     }
     return render(request, 'employee/personal_info.html', context)
 # export data from the csv file
 
+
+@login_required()
+@permission_required('is_superuser')
 def export_employee_info(request):
     employee = EmployeeInfoResource()
     dataset = employee.export()
@@ -56,6 +58,9 @@ def export_employee_info(request):
     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
     return response
 
+
+@login_required()
+@permission_required('is_superuser')
 def export_employeement_info(request):
     employment_info = EmploymentInformationResourse()
     dataset = employment_info.export()
@@ -65,6 +70,8 @@ def export_employeement_info(request):
     return response
 
 
+@login_required()
+@permission_required('is_superuser')
 def export_next_of_kind_info(request):
     next_of_kind_info = NextOfKindResources()
     dataset = next_of_kind_info.export()
@@ -74,6 +81,8 @@ def export_next_of_kind_info(request):
     return response
 
 
+@login_required()
+@permission_required('is_superuser')
 def export_bank_info(request):
     bank_info = NextOfKindResources()
     dataset = bank_info.export()
@@ -83,6 +92,8 @@ def export_bank_info(request):
     return response
 
 
+@login_required()
+@permission_required('is_superuser')
 def export_citienship_info(request):
     citizenship = CitizenshipResources()
     dataset = citizenship.export()
@@ -92,6 +103,8 @@ def export_citienship_info(request):
     return response
 
 
+@login_required()
+@permission_required('is_superuser')
 def export_areof_residence_info(request):
     area_of_residence = AreaOfResidenceResources()
     dataset = area_of_residence.export()
@@ -346,15 +359,6 @@ def employee_profile_view(request, pk):
     return render(request, 'employee/employee_profile.html', context)
 
 #upload employees and except
-@login_required()
-@permission_required('is_superuser')
-def export_employee(request):
-    person_resource = EmployeePersonalInfoResource()
-    dataset = person_resource.export()
-    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="employee-data.xlsx"'
-    return response
-
 @login_required()
 @permission_required('is_superuser')
 def upload_new_employees(request):
