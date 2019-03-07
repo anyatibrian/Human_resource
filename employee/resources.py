@@ -1,38 +1,6 @@
+from import_export import resources, fields, widgets
+from import_export.widgets import ForeignKeyWidget
 from import_export import resources
-from .models import (
-                        EmployeePersonalInfo, 
-                        EmploymentInformation,
-                        CitizenshipInfo,
-                        NextOfKind,
-                        BankInformation,
-                        AreaOfResidence
-                    )
-
-# class PersonResource(resources.ModelResource):
-#     class Meta:
-#         model = P
-
-class EmployeePersonalInfoResource(resources.ModelResource):
-    class Meta:
-        model = EmployeePersonalInfo
-        
-class EmploymentInformationResource(resources.ModelResource):
-    class Meta:
-        model = EmploymentInformation
-        
-class CitizenshipInfoResource(resources.ModelResource):
-    class Meta:
-        model = CitizenshipInfo
-
-class NextOfKindResource(resources.ModelResource):
-    class Meta:
-        model = NextOfKind
-class BankInformationResource(resources.ModelResource):
-    class Meta:
-        model = BankInformation
-class AreaOfResidenceResource(resources.ModelResource):
-    class Meta:
-        model = AreaOfResidence
 from employee.models import (
     EmployeePersonalInfo,
     BankInformation,
@@ -46,3 +14,37 @@ class EmployeeInfoResource(resources.ModelResource):
     class Meta:
         model = EmployeePersonalInfo
         exclude =('image','create_at')
+
+class EmploymentInformationResourse(resources.ModelResource):
+    class Meta:
+        model = EmploymentInformation
+        employee = fields.Field(column_name='employee', attribute='employee',
+                              widget=ForeignKeyWidget(EmployeePersonalInfo,'surname'))
+        fields =('employee')
+
+
+class NextOfKindResources(resources.ModelResource):
+    class Meta:
+        model = NextOfKind
+        employee = fields.Field(column_name='employee', attribute='employee',
+                                widget=ForeignKeyWidget(EmployeePersonalInfo, 'surname'))
+
+class BankInfoResources(resources.ModelResource):
+    class Meta:
+        model = BankInformation
+        employee = fields.Field(column_name='employee', attribute='employee',
+                                widget=ForeignKeyWidget(EmployeePersonalInfo, 'surname'))
+
+
+class CitizenshipResources(resources.ModelResource):
+    class Meta:
+        model = CitizenshipInfo
+        employee = fields.Field(column_name='employee', attribute='employee',
+                                widget=ForeignKeyWidget(EmployeePersonalInfo, 'surname'))
+
+
+class AreaOfResidenceResources(resources.ModelResource):
+    class Meta:
+        model = AreaOfResidence
+        employee = fields.Field(column_name='employee', attribute='employee',
+                                widget=ForeignKeyWidget(EmployeePersonalInfo, 'surname'))

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 # encoding=utf8
 from django.shortcuts import render
+=======
+>>>>>>> 4583673fdc6d498464ba8ee3fbac97a0c3ab143a
 from django.shortcuts import render, redirect,Http404,HttpResponse
 from django.urls import reverse_lazy
 # import django_excel as excel
@@ -9,6 +12,14 @@ from employee.models import (EmployeePersonalInfo,
                              BankInformation,
                              CitizenshipInfo,
                              AreaOfResidence)
+from employee.resources import (
+    EmployeeInfoResource,
+    NextOfKindResources,
+    EmploymentInformationResourse,
+    AreaOfResidenceResources,
+    BankInfoResources,
+    CitizenshipResources
+)
 from django.views.generic import UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required, permission_required
@@ -23,6 +34,7 @@ from django.contrib import messages
 # from .forms import UploadFileForm
 import os, csv, io, xlrd
 from datetime import datetime
+<<<<<<< HEAD
 from .resources import (EmployeePersonalInfoResource, 
                         EmploymentInformationResource,
                         AreaOfResidenceResource,
@@ -30,11 +42,11 @@ from .resources import (EmployeePersonalInfoResource,
                         BankInformationResource,
                         CitizenshipInfoResource
                         )
+=======
+>>>>>>> 4583673fdc6d498464ba8ee3fbac97a0c3ab143a
 from golfproject.forms import DateInput
 from tablib import Dataset
 from employee.forms import ImportForm
-from employee.resources import EmployeeInfoResource
-
 
 # Create your views here.
 
@@ -42,37 +54,84 @@ from employee.resources import EmployeeInfoResource
 @permission_required('is_superuser')
 def view_employee_personal_info(request):
     # the view responsible for showing all the employee information details
-    employee_info = EmployeePersonalInfo.objects.all()
-    if request.method =='POST':
-        import_form = ImportForm(request.POST, request.FILES)
-        employee_info_resource = EmployeeInfoResource()
-        dataset = Dataset()
-        new_employee = request.FILES['file']
-        dataset.load(new_employee.read())
-        result = employee_info_resource.import_data(dataset, dry_run=True)
-        if not result.has_errors():
-            employee_info_resource.import_data(dataset, dry_run=False)
-    else:
-          import_form = ImportForm()                           
+    employee_info = EmployeePersonalInfo.objects.all()                         
     context = {
         'employee_info': employee_info,
-        'heading':'choose your file to uplaod',
-        'import_form':import_form
+        'heading':'choose your file to uplaod'
     }
     return render(request, 'employee/personal_info.html', context)
 # export data from the csv file
 
-def export(request):
+
+@login_required()
+@permission_required('is_superuser')
+def export_employee_info(request):
     employee = EmployeeInfoResource()
     dataset = employee.export()
     response = HttpResponse(
         dataset.xls, content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
     return response
+
+
+@login_required()
+@permission_required('is_superuser')
+def export_employeement_info(request):
+    employment_info = EmploymentInformationResourse()
+    dataset = employment_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="employent_info.xls"'
+    return response
+
+
+@login_required()
+@permission_required('is_superuser')
+def export_next_of_kind_info(request):
+    next_of_kind_info = NextOfKindResources()
+    dataset = next_of_kind_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="nextofkind_info.xls"'
+    return response
+
+
+@login_required()
+@permission_required('is_superuser')
+def export_bank_info(request):
+    bank_info = NextOfKindResources()
+    dataset = bank_info.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="bank_info.xls"'
+    return response
+
+
+@login_required()
+@permission_required('is_superuser')
+def export_citienship_info(request):
+    citizenship = CitizenshipResources()
+    dataset = citizenship.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="citizenship_info.xls"'
+    return response
+
+
+@login_required()
+@permission_required('is_superuser')
+def export_areof_residence_info(request):
+    area_of_residence = AreaOfResidenceResources()
+    dataset = area_of_residence.export()
+    response = HttpResponse(
+        dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="areofresidence_info.xls"'
+    return response
+
 class EmployeeInfoCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = EmployeePersonalInfo
     fields = ['surname', 'first_name', 'middle_name', 'image', 'date_of_birth',
-              'gender', 'marital_status', 'email', 'Contact', 'number_of_children']
+              'gender', 'marital_status', 'email', 'contact', 'number_of_children']
 
     def get_form(self, form_class=CreateView):
         form = super().get_form()
