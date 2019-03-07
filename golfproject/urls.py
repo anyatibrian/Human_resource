@@ -69,8 +69,16 @@ urlpatterns = [
     path('employees/export/', employee_views.export_employee, name="export-employees"),
     # path('employees/upload/', ),
     path('employees/upload-file/', employee_views.upload_new_employees, name="upload-employees-file"),
-    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit")
-    path('employee/info/export', employee_views.export, name='employee_info_export')
+    path('member/edit/<slug:pk>/', project_views.UpdateMember.as_view(), name="member-edit"),
+    path('employment/info/export/', employee_views.export, name='employee_info_export'),
+    path('employee/information/export/', employee_views.export_employee_information, name="export-employee-information"),
+    path('nextof-kin/info/export/', employee_views.export_nextof_kin, name='nextof-kind-info'),
+    path('bankinfo/export/', employee_views.export_banking_info, name="bank-info-export"),
+    path('citizenship/info/export/', employee_views.export_citizenship_info, name="citizenship-info-export"),
+    path('members/info/export/', project_views.export_members, name="members-export"),
+    path('tournaments/info/export/', project_views.export_tournament, name="tournament-export"),
+    path('bookings/info/export/', project_views.export_booking, name="booking-export"),
+    path('residential/info/export/', employee_views.export_residencial_area, name="residential-info-export"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

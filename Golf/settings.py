@@ -40,11 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'bootstrap_datepicker_plus',
-<<<<<<< HEAD
     'import_export',
-=======
-    'import_export'
->>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
+    
+
 ]
 
 MIDDLEWARE = [
@@ -81,28 +79,28 @@ WSGI_APPLICATION = 'Golf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'golfcourse',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
-#         # 'NAME': 'ugfind',
-#         # 'ENGINE': 'django.db.backends.mysql',        
-#         # 'USER' : 'root',
-#         # 'PASSWORD': 'aula72'
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'golfcourse',
+#         'USER': 'postgres',
+#         'PASSWORD': 'password',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'NAME': os.path.join(PROJECT_FOLDER, 'dev.db'),
+        # 'NAME': 'ugfind',
+        # 'ENGINE': 'django.db.backends.mysql',        
+        # 'USER' : 'root',
+        # 'PASSWORD': 'aula72'
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

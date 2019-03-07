@@ -12,6 +12,8 @@ from django.contrib.auth.models import User
 from golfproject.models import Tournament, BookingModel, UserProfile
 import stripe
 from Golf import settings
+from django.http import HttpResponse
+from .resources import UserProfileResource, TournamentResource, BookingModelResource
 #update member
 from django.views.generic.edit import UpdateView
 stripe.api_key = settings.STRIPE_PUBLISHABLE_KEY
@@ -69,7 +71,7 @@ def members_page(request):
         if register_form.is_valid():
             register_form.save()
             messages.success(request, 'member'+username+'has been created successfully')
-            messages.success(request, f'members account has been created successfully')
+            messages.success(request, 'members account has been created successfully')
             return redirect('admin-members')
     else:
         register_form = RegisterMember()
@@ -189,3 +191,28 @@ class UpdateMember(UpdateView):
     slug_field = 'username'
     slug_url_kwarg = 'slug'
 
+
+@login_required()
+@permission_required('is_superuser')
+def export_booking(request):
+    booking = BookingModelResource()
+    dataset = booking.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="booking-info.xlsx"'
+    return response
+@login_required()
+@permission_required('is_superuser')
+def export_tournament(request):
+    tournaments = TournamentResource()
+    dataset = tournaments.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="tournament-info.xlsx"'
+    return response
+@login_required()
+@permission_required('is_superuser')
+def export_members(request):
+    members = UserModelResource()
+    dataset = members.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="next-of-kind-info.xlsx"'
+    return response

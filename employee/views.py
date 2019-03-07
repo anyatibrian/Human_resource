@@ -1,11 +1,8 @@
-<<<<<<< HEAD
 # encoding=utf8
 from django.shortcuts import render
-=======
 from django.shortcuts import render, redirect,Http404,HttpResponse
->>>>>>> 1b653e89efeb1302a79dea5588349fd41ca95018
 from django.urls import reverse_lazy
-import django_excel as excel
+# import django_excel as excel
 from employee.models import (EmployeePersonalInfo,
                              NextOfKind,
                              EmploymentInformation,
@@ -26,7 +23,13 @@ from django.contrib import messages
 # from .forms import UploadFileForm
 import os, csv, io, xlrd
 from datetime import datetime
-from .resources import EmployeePersonalInfoResource, EmploymentInformationResource
+from .resources import (EmployeePersonalInfoResource, 
+                        EmploymentInformationResource,
+                        AreaOfResidenceResource,
+                        NextOfKindResource,
+                        BankInformationResource,
+                        CitizenshipInfoResource
+                        )
 from golfproject.forms import DateInput
 from tablib import Dataset
 from employee.forms import ImportForm
@@ -319,6 +322,50 @@ def export_employee(request):
     dataset = person_resource.export()
     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="employee-data.xlsx"'
+    return response
+
+@login_required()
+@permission_required('is_superuser')
+def export_employee_information(request):
+    employees = EmploymentInformationResource()
+    dataset = employees.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="employee-information-data.xlsx"'
+    return response
+
+@login_required()
+@permission_required('is_superuser')
+def export_citizenship_info(request):
+    citizen_info = CitizenshipInfoResource()
+    dataset = citizen_info.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="citizenship-info.xlsx"'
+    return response
+@login_required()
+@permission_required('is_superuser')
+def export_banking_info(request):
+    banking_info = BankInformationResource()
+    dataset = banking_info.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="bank-information.xlsx"'
+    return response
+
+@login_required()
+@permission_required('is_superuser')
+def export_nextof_kin(request):
+    next_of_kind = NextOfKindResource()
+    dataset = next_of_kind.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="next-of-kind-info.xlsx"'
+    return response
+
+@login_required()
+@permission_required('is_superuser')
+def export_residencial_area(request):
+    area_of_residence = AreaOfResidenceResource()
+    dataset = area_of_residence.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="area-of-residence-info.xlsx"'
     return response
 
 @login_required()
