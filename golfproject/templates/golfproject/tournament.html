@@ -1,0 +1,54 @@
+{% extends 'golfproject/base.html' %}
+{% load crispy_forms_tags %}
+{% block pagecontent %}
+     <div class="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12 grid-margin">
+              <!-- the add user button here-->
+              <button type="button" class="btn btn-icons btn-rounded btn-warning  mb-2" id="add-member" style="margin-left:96%;"
+                      data-toggle="modal" data-target="#exampleModal">
+                  <i class="mdi mdi-plus"></i>
+              </button>
+              <div class="card">
+                <div class="card-body">
+                    {% for tournament in tournaments %}
+                    <div class="card text-white  mb-3" style="max-width: 15rem; display: inline-block;">
+                        <img  class="card-img-top" src="{{ tournament.images.url }}">
+                        <div class="card-img-overlay" style="z-index:0.2;">
+                            <h3 class="card-title" style="background: white; padding: 10px 10px 10px 10px; border-radius:5px;" >
+                                {{ tournament.name }}</h3>
+                            <p class="card-text">{{ tournament.description}}</p>
+                        </div>
+                    <div class="card-footer bg-success">
+                        <i class="mdi mdi-clock-alert" style="color:white;font-size:20px;"></i>
+                        <span class="text-small">starts on: {{tournament.state_date}}</span>
+
+                    </div>
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+    <!-- Modal -->
+        <div class="modal modal-lg fade" id="exampleModal" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text text-black" id="exampleModalLabel">Tournament Information</h3>
+                        <hr>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {% crispy tournament_form tournament_form.helper %}
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
