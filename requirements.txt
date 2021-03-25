@@ -64,7 +64,7 @@ python-dateutil==1.5
 python-dotenv==0.9.1
 python-env==1.0.0
 pytz==2018.4
-PyYAML==3.13
+PyYAML==5.4
 requests==2.21.0
 six==1.11.0
 stripe==2.19.0
